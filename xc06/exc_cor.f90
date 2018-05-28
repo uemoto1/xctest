@@ -158,7 +158,7 @@ program test
   do ix = 1, nx
     do iy = 1, ny
       do iz = 1, nz
-        write(*, *) ix, iy, iz, rho(ix, iy, iz), vxc(ix, iy, iz), exc(ix, iy, iz), tot_exc
+        write(*, '(3(i6,x),3(es23.15e4,x))') ix, iy, iz, rho(ix, iy, iz), vxc(ix, iy, iz), exc(ix, iy, iz)
       end do
     end do
   end do
