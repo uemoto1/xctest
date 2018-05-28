@@ -126,7 +126,7 @@ program test
   character(20) :: xc
   integer :: ispin ! ispin=0(nonmag) =1(mag)
   real(8) :: cval
-  integer :: nx, ny, nz
+!  integer :: nx, ny, nz
   real(8) :: dv
   real(8) :: rho(nx, ny, nz)
   real(8) :: rho_s(nx, ny, nz, 2)
