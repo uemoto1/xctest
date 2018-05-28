@@ -122,6 +122,7 @@ program test
   integer, parameter :: nx = 4
   integer, parameter :: ny = 4
   integer, parameter :: nz = 4
+  real(8), parameter :: pi = 3.141592653589
   
   character(20) :: xc
   integer :: ispin ! ispin=0(nonmag) =1(mag)
@@ -140,15 +141,22 @@ program test
   real(8) :: exc(nx, ny, nz)
   real(8) :: tot_exc ! sum(exc)end program test
   
-  integer :: ix, iy, iz
+  integer :: ix, iy, iz, ii
+  real(8) :: rs(nx, ny, nz)
+  
+  
   
   xc = 'pz'
   ispin = 0
   dv = 1.00 / (nx * ny * nz)
+  ii = 1
   do ix = 1, nx
     do iy = 1, ny
       do iz = 1, nz
-        rho(ix, iy, iz) = 1.00
+        rs(ix, iy, iz) = ii * (5.00 / (nx * ny * nz))
+        rho(ix, iy, iz) = 3.0 / (4.0 * pi * rs(ix, iy, iz) ** 3)
+        ! Undefined
+        ii = ii + 1
       end do
     end do
   end do
@@ -158,7 +166,7 @@ program test
   do ix = 1, nx
     do iy = 1, ny
       do iz = 1, nz
-        write(*, '(3(i6,x),3(es12.5,x))') ix, iy, iz, rho(ix, iy, iz), vxc(ix, iy, iz), exc(ix, iy, iz)
+        write(*, '(3(i6,x),4(es12.5,x))') ix, iy, iz, rs(ix, iy, iz), rho(ix, iy, iz), vxc(ix, iy, iz), exc(ix, iy, iz)
       end do
     end do
   end do
