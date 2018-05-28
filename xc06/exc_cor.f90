@@ -144,7 +144,11 @@ program test
   integer :: ix, iy, iz, ii
   real(8) :: rs(nx, ny, nz)
   
+  real(8) :: rho1d(nx * ny * nz)
+  real(8) :: rho1d(nx * ny * nz)
   
+  TYPE(xc_f90_pointer_t) :: xc_func
+  TYPE(xc_f90_pointer_t) :: xc_info
   
   xc = 'pz'
   ispin = 0
@@ -155,6 +159,7 @@ program test
       do iz = 1, nz
         rs(ix, iy, iz) = ii * (5.00 / (nx * ny * nz))
         rho(ix, iy, iz) = 3.0 / (4.0 * pi * rs(ix, iy, iz) ** 3)
+        rho1d(ii) = rho(ix, iy, iz)
         ! Undefined
         ii = ii + 1
       end do
@@ -163,14 +168,27 @@ program test
   
   call core_exc_cor(xc, ispin, cval, nx, ny, nz, dv, rho, rho_s, tau, rj, grho, rlrho, rho_nlcc, vxc, vxc_s, exc, tot_exc)
   
+  call xc_f90_func_init(xc_func, xc_info, XC_LDA_X, XC_UNPOLARIZED)
+  call xc_f90_lda_exc_vxc(xc_func, nx*ny*nz, rho1d(1), excx1d(1), vxcx1d(1))
+  call xc_f90_func_end(xc_func)
+  
+  call xc_f90_func_init(xc_func, xc_info, XC_LDA_C_PZ_MOD, XC_UNPOLARIZED)
+  call xc_f90_lda_exc_vxc(xc_func, nx, rho1d(1), excc1d(1), vxcc1d(1))
+  call xc_f90_func_end(xc_func)
+  
+  ii = 1
   do ix = 1, nx
     do iy = 1, ny
       do iz = 1, nz
-        write(*, '(3(i6,x),4(es12.5,x))') ix, iy, iz, rs(ix, iy, iz), rho(ix, iy, iz), vxc(ix, iy, iz), exc(ix, iy, iz)
+        write(*, '(3(i6,x),8(es12.5,x))') ix, iy, iz, rs(ix, iy, iz), rho(ix, iy, iz), vxc(ix, iy, iz), exc(ix, iy, iz), excx1d(ii), vxcx1d(ii),  excc1d(ii), vxcc1d(ii)
+        ! Undefined
+        ii = ii + 1
       end do
     end do
   end do
   stop
+  
+  
 end program test
   
   
