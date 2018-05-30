@@ -117,6 +117,9 @@ contains
 end subroutine
 
 program test
+  use xc_f90_types_m
+  use xc_f90_lib_m
+
   implicit none
   
   integer, parameter :: nx = 4
@@ -145,7 +148,8 @@ program test
   real(8) :: rs(nx, ny, nz)
   
   real(8) :: rho1d(nx * ny * nz)
-  real(8) :: rho1d(nx * ny * nz)
+  real(8) :: excx1d(nx * ny * nz), vxcx1d(nx * ny * nz)
+  real(8) :: excc1d(nx * ny * nz), vxcc1d(nx * ny * nz)
   
   TYPE(xc_f90_pointer_t) :: xc_func
   TYPE(xc_f90_pointer_t) :: xc_info
@@ -173,7 +177,7 @@ program test
   call xc_f90_func_end(xc_func)
   
   call xc_f90_func_init(xc_func, xc_info, XC_LDA_C_PZ_MOD, XC_UNPOLARIZED)
-  call xc_f90_lda_exc_vxc(xc_func, nx, rho1d(1), excc1d(1), vxcc1d(1))
+  call xc_f90_lda_exc_vxc(xc_func, nx*ny*nz, rho1d(1), excc1d(1), vxcc1d(1))
   call xc_f90_func_end(xc_func)
   
   ii = 1
