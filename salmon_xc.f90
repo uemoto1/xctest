@@ -54,6 +54,19 @@ module salmon_xc
 
 contains
 
+  subroutine print_xc_info()
+    implicit none
+    integer :: major, minor, micro
+    
+#ifdef SALMON_USE_LIBXC
+    call xc_version(major, minor, micro)
+    print '(A,3(I3,"."))', 'Libxc version ', major, minor, micro
+#endif
+    print '(A)', 'SALMON version 1.0.0 builtin functionals'
+    return
+  end subroutine print_xc_info
+    
+
   subroutine init_xc(xcname, ispin, cval, xc)
   implicit none
   character(*), intent(in)         :: xcname
