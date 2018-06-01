@@ -15,9 +15,11 @@
 !
 !-----------------------------------------------------------------------------------------
 module builtin_tbmbj
-  use salmon_math, only: erfc_salmon, pi
+  use salmon_math, only: erfc_salmon
   implicit none
   
+  real(8),parameter :: Pi=3.141592653589793d0
+
 contains
   
   
