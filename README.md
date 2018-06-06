@@ -26,10 +26,10 @@
 ```
 use salmon_xc
 
-tyoe(xc_functional) :: xc
+type(xc_functional) :: xc
 
 ! 初期化（プログラムの初期化時に一度だけ）
-call init_xc("libxc_pzm", 1, 0d0, xc)
+call init_xc(xc, 1, 1d0, xcname='pz')
 
 ! 汎関数の計算
 ! rho, exc, vxcがそれぞれ、(NX, NY, NZ)の三次元配列の場合
@@ -41,17 +41,19 @@ call finalize_xc(xc)
 
 ## サブルーチン概要
 
-### `init_ac(xcname, ispin, cval, xc)`
+### `init_xc(xcname, ispin, cval, xc)`
 
 #### 引数
 | 型        |   名前         |  説明 |
 | ------------- |---------------| ----- |
-| character(16) | xcname      | 交換相関ポテンシャル名称 |
+| xc_functional | xc | 格納変数 |
 | integer | ispin      | 磁性(1=nonmag, 2=spin?, 4=spinor?) |
 | real(8) | cval  | (MetaGGAなどの)パラメータ |
-| xc_functional | xc | 格納変数 |
+| character(32) | xcname      |  optional 交換相関ポテンシャル名称（一括していする場合） |
+| character(32) | xname      |  optional 交換ポテンシャル名称（単体指定する場合） |
+| character(32) | cname      |  optional 相関ポテンシャル名称（単体指定する場合） |
 
-### `calc_ac(xc, ...)`
+### `calc_xc(xc, ...)`
 
 #### 引数
 
@@ -80,12 +82,11 @@ call finalize_xc(xc)
 | real(8) | nabx(:) |有限差分法パラメータ|
 | real(8) | naby(:) |有限差分法パラメータ|
 | real(8) | nabz(:) |有限差分法パラメータ|
-| real(8) | Hxyz | １グリッドの体積 |
-| real(8) | aLxyz | 計算領域全体の体積 |
+
 
 - `nd`, `ifd(x|y|z)`, `nab(x|y|z)` は`builtin-PBE`のみ使用
-- `Hxyz`, `aLxyz, は`TBmBJ/BJ_PW`のみ使用
+- (`Hxyz`, `aLxyz`を廃止,TBmBJは`rho`, `grho`, `rlrho`, `rj`, `tau`のみで計算可)
 
 
-### `finalize_ac(xc)`
+### `finalize_xc(xc)`
 - メモリを開放
