@@ -41,7 +41,7 @@ call finalize_xc(xc)
 
 ## サブルーチン概要
 
-### `init_xc(xcname, ispin, cval, xc)`
+### `init_xc(xc, ispin, cval, xcname, xname, cname)`
 
 #### 引数
 | 型        |   名前         |  説明 |
@@ -52,6 +52,11 @@ call finalize_xc(xc)
 | character(32) | xcname      |  optional 交換相関ポテンシャル名称（一括していする場合） |
 | character(32) | xname      |  optional 交換ポテンシャル名称（単体指定する場合） |
 | character(32) | cname      |  optional 相関ポテンシャル名称（単体指定する場合） |
+
+- Example:
+```
+call init_xc(xc, 1, 1d0, xcname=xc, xname=xname, cname=name)
+```
 
 ### `calc_xc(xc, ...)`
 
